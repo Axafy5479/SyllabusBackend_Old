@@ -1,3 +1,4 @@
+import * as repo from "./repository";
 import {Subject,Semester} from "./settings";
 
 // ユーザー情報
@@ -38,7 +39,7 @@ export type LectureFilter = {
 // UserDataを取得する
 export function GetUserData():UserData{
     // ユーザー情報を取得する
-    let user = TryGetUserData() as UserData;
+    let user = repo.TryGetUserData() as UserData;
     if(user!=null){
         // nullでない場合はそのまま返す
         return user;
@@ -82,13 +83,13 @@ export function ChangeUserData(dataDiff:UpdateUserData){
         user.subject = dataDiff.subject;
     }
 
-    SaveUserData(user);
+    repo.SaveUserData(user);
 }
 
 export function UpdateRegisteringLectures(lectures:Lecture[]){
     const userData = GetUserData() as UserData;
     userData.lectures = lectures;
-    SaveUserData(userData);
+    repo.SaveUserData(userData);
 }
 
 export function GetLectures(filter:LectureFilter){

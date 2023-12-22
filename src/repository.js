@@ -8,12 +8,12 @@
 /******************* 保存場所 *******************/
 
 // ユーザーデータを保存するファイルの名前
-const saveFileName = "user.json";
+export const saveFileName = "user.json";
 
 // このアプリ専用のデータ保存領域
 // https://developers.google.com/drive/api/guides/appdata?hl=ja
 // scopeをdrive.appdataに絞るため、このディレクトリ外のファイルには触れない
-const parentDir = "appDataFolder";
+export const parentDir = "appDataFolder";
 
 /***********************************************/
 
@@ -25,14 +25,14 @@ const parentDir = "appDataFolder";
 
 
 // アプリケーション領域のファイルを全て取得する
-function GetAllAppFiles(){
+export function GetAllAppFiles(){
     var files = Drive.Files.list({spaces: [parentDir]}).files;
     return files;
 }
 
 // アプリケーション領域のファイルの中から、特定のファイル名のファイルを取得
 // 無ければnullを返す
-function TryGetAppFilesByName(fileName){
+export function TryGetAppFilesByName(fileName){
     // 全てのファイルを取得
     var files = GetAllAppFiles();
 
@@ -45,7 +45,7 @@ function TryGetAppFilesByName(fileName){
 
 // ユーザーファイル (saveFileName) を取得
 // なければnullを返す
-function TryGetUserData(){
+export function TryGetUserData(){
     // 名前が userData.userDataFilename のものを取得
     const file = TryGetAppFilesByName(saveFileName);
 
@@ -61,7 +61,7 @@ function TryGetUserData(){
 
 // ユーザーファイル (saveFileName) のIdを取得
 // なければnullを返す
-function TryGetUserDataFileId(){
+export function TryGetUserDataFileId(){
     // 名前が userData.userDataFilename のものを取得
     const file = TryGetAppFilesByName(saveFileName);
 
@@ -74,7 +74,7 @@ function TryGetUserDataFileId(){
 /******************* ファイルの保存 *******************/
 
 // ファイルをuserDataObjectで上書き保存
-function SaveUserData(userDataObject){
+export function SaveUserData(userDataObject){
     // userDataObjectをjsonにシリアル化
     let jsonStr = JSON.stringify(userDataObject, null, '  ');
 
@@ -117,7 +117,7 @@ function updateUserFile(id,blob,metaData){
 /******************* ファイルの削除 *******************/
 
 // アプリケーション領域のファイルを全て削除
-function DeleteUserData(){
+export function DeleteUserData(){
 
     // アプリケーション領域のファイルのidを全て取得
     const fileIds = Array.from(GetAllAppFiles(), f=>f.id);

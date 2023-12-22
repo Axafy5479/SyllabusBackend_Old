@@ -4,13 +4,15 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bundle":"npx esbuild src/index.ts --bundle --outdir=dist --format=iife --global-name=_entry"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/google-apps-script": "^1.0.78",
+    "esbuild": "^0.19.10",
     "googleapis": "^129.0.0"
   }
 }
