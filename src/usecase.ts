@@ -36,6 +36,10 @@ export type LectureFilter = {
     semesters:Semester[] | null
 }
 
+export function IsNewUser():boolean{
+    return repo.TryGetUserData() == null;
+}
+
 // UserDataを取得する
 export function GetUserData():UserData{
     // ユーザー情報を取得する
@@ -94,4 +98,8 @@ export function UpdateRegisteringLectures(lectures:Lecture[]){
 
 export function GetLectures(filter:LectureFilter){
 
+}
+
+export function DeleteUserData(){
+    repo.DeleteUserData();
 }
