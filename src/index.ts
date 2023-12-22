@@ -4,46 +4,43 @@ import * as usecase from "./usecase";
 export function myFunction() {
   deleteUserData();
   getUserData();
-  isNewUser();
   getUserData();
-  changeUserData({grade:3});
+  saveUserData('{"hello":"world"}');
   getUserData();
-  updateLectures([{id:"kosuzu",semester:"A",year:2023},{id:"akyuu",semester:"A1",year:2023}]);
+  saveUserData('{"kosuzu":"akyuu"}');
   getUserData();
-  changeUserData({subject:"Li1"});
-  getUserData();
-  isNewUser();
+  deleteUserData();
 }
 
+// users/ POST
+function saveUserData(jsonStr:string){
+  Logger.log("ユーザーデータを保存します");
+  usecase.UploadFile(jsonStr);
+}
 
+// users/ GET
 function getUserData(){
   const user = usecase.GetUserData();
-  Logger.log(user);
+  Logger.log("ユーザー情報:"+user);
 }
 
-function updateLectures(lectures:usecase.Lecture[]){
-  usecase.UpdateRegisteringLectures(lectures);
-}
-
-function isNewUser(){
-  const isNewUser = usecase.IsNewUser();
-  Logger.log(isNewUser);
-}
-
-function getRegisteringLectures(filter:usecase.LectureFilter){
-  const lectures = usecase.GetLectures(filter);
-  Logger.log(lectures);
-}
-
+// users/ DELETE
 function deleteUserData(){
+  Logger.log("ユーザーデータを削除します");
   usecase.DeleteUserData();
 }
 
-function changeUserData(changing:usecase.UpdateUserData){
-  usecase.ChangeUserData(changing);
+
+
+export function doGet() {
+    return getUserData();
 }
 
+export function doPost(e:any) {
+  const jsonStr = e.postData.getDataAsString();
+  return usecase.UploadFile(jsonStr);
+}
 
-// function doGet(e) {
-//     uploadFile();
-// }
+export function doDelete(){
+  usecase.DeleteUserData();
+}

@@ -45,7 +45,7 @@ export function TryGetAppFilesByName(fileName){
 
 // ユーザーファイル (saveFileName) を取得
 // なければnullを返す
-export function TryGetUserData(){
+export function TryGetUserDataStr(){
     // 名前が userData.userDataFilename のものを取得
     const file = TryGetAppFilesByName(saveFileName);
 
@@ -53,10 +53,7 @@ export function TryGetUserData(){
     if(file == null) return null;
 
     // ファイルの中身を読む
-    const jsonStr = Drive.Files.get(file.id,{alt:"media"});
-
-    // objectにパースして返す
-    return JSON.parse(jsonStr);
+    return Drive.Files.get(file.id,{alt:"media"});
 }
 
 // ユーザーファイル (saveFileName) のIdを取得
@@ -74,10 +71,7 @@ export function TryGetUserDataFileId(){
 /******************* ファイルの保存 *******************/
 
 // ファイルをuserDataObjectで上書き保存
-export function SaveUserData(userDataObject){
-    // userDataObjectをjsonにシリアル化
-    let jsonStr = JSON.stringify(userDataObject, null, '  ');
-
+export function SaveJson(jsonStr){
     // バイナリデータの用意
     var blob = Utilities.newBlob('', "text/plain", saveFileName);
 
