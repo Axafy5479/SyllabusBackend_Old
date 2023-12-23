@@ -24,14 +24,21 @@ export const parentDir = "appDataFolder";
 /******************* ファイルの取得 *******************/
 
 
-// アプリケーション領域のファイルを全て取得する
+/**
+ * アプリケーション領域のファイルを全て取得する
+ * @returns アプリケーション領域に存在する全てのファイル
+ */
 export function GetAllAppFiles(){
     var files = Drive.Files.list({spaces: [parentDir]}).files;
     return files;
 }
 
-// アプリケーション領域のファイルの中から、特定のファイル名のファイルを取得
-// 無ければnullを返す
+/**
+ * アプリケーション領域のファイルの中から、特定のファイル名のファイルを取得。
+ * 無ければnullを返す
+ * @param {string} fileName 
+ * @returns 指定された名前を持つファイル
+ */
 export function TryGetAppFilesByName(fileName){
     // 全てのファイルを取得
     var files = GetAllAppFiles();
@@ -43,8 +50,10 @@ export function TryGetAppFilesByName(fileName){
     return files.find(f=>f.name == saveFileName);
 }
 
-// ユーザーファイル (saveFileName) を取得
-// なければnullを返す
+/**
+ * ユーザーファイル (saveFileName) の中身を取得。なければnullを返す
+ * @returns {string} ファイルの中身
+ */
 export function TryGetUserDataStr(){
     // 名前が userData.userDataFilename のものを取得
     const file = TryGetAppFilesByName(saveFileName);
@@ -56,8 +65,10 @@ export function TryGetUserDataStr(){
     return Drive.Files.get(file.id,{alt:"media"});
 }
 
-// ユーザーファイル (saveFileName) のIdを取得
-// なければnullを返す
+/**
+ * ユーザーファイル (saveFileName) のIdを取得。なければnullを返す
+ * @returns {string} ユーザーファイルのファイルId
+ */
 export function TryGetUserDataFileId(){
     // 名前が userData.userDataFilename のものを取得
     const file = TryGetAppFilesByName(saveFileName);
@@ -70,7 +81,10 @@ export function TryGetUserDataFileId(){
 
 /******************* ファイルの保存 *******************/
 
-// ファイルをuserDataObjectで上書き保存
+/**
+ * ファイルをuserDataObjectで上書き保存
+ * @param {string} jsonStr ファイルに書き込みたいjson string
+ */
 export function SaveJson(jsonStr){
     // バイナリデータの用意
     var blob = Utilities.newBlob('', "text/plain", saveFileName);
@@ -94,13 +108,22 @@ export function SaveJson(jsonStr){
     else createUserData(blob,metaData);
 }
 
-// ファイルの新規作成
+/**
+ * ファイルの新規作成
+ * @param {GoogleAppsScript.Base.Blob} blob 書き込む内容
+ * @param {*} metaData ファイルのメタデータ
+ */
 function createUserData(blob,metaData){
     metaData.parents = [parentDir];
     Drive.Files.create(metaData, blob);
 }
 
-// ファイルの上書き保存
+/**
+ * ファイルの上書き保存
+ * @param {string} id 上書き対象のファイルのid
+ * @param {GoogleAppsScript.Base.Blob} 書き込む内容 
+ * @param {*} metaData ファイルのメタデータ
+ */
 function updateUserFile(id,blob,metaData){
   Drive.Files.update(metaData,id, blob);
 }
@@ -110,7 +133,9 @@ function updateUserFile(id,blob,metaData){
 
 /******************* ファイルの削除 *******************/
 
-// アプリケーション領域のファイルを全て削除
+/**
+ * アプリケーション領域のファイルを全て削除
+ */
 export function DeleteUserData(){
 
     // アプリケーション領域のファイルのidを全て取得
